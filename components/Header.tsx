@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 
 interface HeaderProps {
@@ -16,8 +17,16 @@ export function Header({ language, onLanguageChange }: HeaderProps) {
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="text-3xl">🔬</div>
+          <Link href="/" className="flex items-center gap-3 group hover:opacity-80 transition-opacity">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center">
+              <Image
+                src="/favicon.jpg"
+                alt="Lab Logo"
+                width={40}
+                height={40}
+                className="rounded-lg"
+              />
+            </div>
             <div className="hidden sm:block">
               <div className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
                 {language === 'ar' ? 'المعمل الافتراضي' : 'Virtual Lab'}

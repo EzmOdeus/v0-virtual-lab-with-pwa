@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Header } from '@/components/Header';
 
 export default function Home() {
@@ -21,8 +22,11 @@ export default function Home() {
           </div>
 
           <div className="relative mx-auto max-w-4xl text-center">
-            <div className="mb-6 inline-block rounded-full bg-blue-600/20 px-4 py-1 text-sm font-semibold text-blue-300 border border-blue-500/30">
-              {language === 'ar' ? '🚀 تعليم علمي تفاعلي' : '🚀 Interactive Science Learning'}
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-blue-600/20 px-4 py-2 text-sm font-semibold text-blue-300 border border-blue-500/30">
+              <div className="w-5 h-5">
+                <Image src="/favicon.jpg" alt="Lab" width={20} height={20} className="rounded" />
+              </div>
+              {language === 'ar' ? 'تعليم علمي تفاعلي' : 'Interactive Science Learning'}
             </div>
 
             <h1 className="mb-6 text-balance text-5xl sm:text-6xl font-bold tracking-tight">

@@ -3,6 +3,13 @@
 import { experiments, categories } from '@/lib/experiments';
 import { ExperimentCard } from './ExperimentCard';
 import { useState } from 'react';
+import Image from 'next/image';
+
+const categoryIcons: Record<string, string> = {
+  physics: '/physics-icon.jpg',
+  chemistry: '/chemistry-icon.jpg',
+  biology: '/biology-icon.jpg',
+};
 
 interface ExperimentsGridProps {
   language: 'ar' | 'en';
@@ -67,7 +74,13 @@ export function ExperimentsGrid({ language }: ExperimentsGridProps) {
                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
             }`}
           >
-            <span>{category.icon}</span>
+            <Image
+              src={categoryIcons[category.id] || category.icon}
+              alt={category.labelEn}
+              width={20}
+              height={20}
+              className="rounded"
+            />
             {language === 'ar' ? category.labelAr : category.labelEn}
           </button>
         ))}

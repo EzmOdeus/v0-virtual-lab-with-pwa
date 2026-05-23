@@ -1,7 +1,14 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Experiment } from '@/lib/experiments';
+
+const categoryIcons: Record<string, string> = {
+  physics: '/physics-icon.jpg',
+  chemistry: '/chemistry-icon.jpg',
+  biology: '/biology-icon.jpg',
+};
 
 interface ExperimentCardProps {
   experiment: Experiment;
@@ -18,7 +25,15 @@ export function ExperimentCard({ experiment, language }: ExperimentCardProps) {
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-600/0 to-blue-600/0 opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
         
         <div className="relative z-10">
-          <div className="mb-4 text-4xl">{experiment.icon}</div>
+          <div className="mb-4 w-12 h-12">
+            <Image
+              src={categoryIcons[experiment.category] || '/favicon.jpg'}
+              alt={experiment.titleEn}
+              width={48}
+              height={48}
+              className="rounded"
+            />
+          </div>
           
           <h3 className="mb-2 text-lg font-semibold text-slate-100 group-hover:text-blue-400 transition-colors">
             {title}

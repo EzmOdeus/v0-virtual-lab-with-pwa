@@ -2,9 +2,16 @@
 
 import { useState, Suspense } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Header } from '@/components/Header';
 import { experiments } from '@/lib/experiments';
 import { useParams } from 'next/navigation';
+
+const categoryIcons: Record<string, string> = {
+  physics: '/physics-icon.jpg',
+  chemistry: '/chemistry-icon.jpg',
+  biology: '/biology-icon.jpg',
+};
 
 function ExperimentContent() {
   const [language, setLanguage] = useState<'ar' | 'en'>('ar');
@@ -54,7 +61,15 @@ function ExperimentContent() {
           {/* Experiment Header */}
           <div className="mb-8">
             <div className="flex items-start gap-4 mb-4">
-              <div className="text-5xl">{experiment.icon}</div>
+              <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                <Image
+                  src={categoryIcons[experiment.category] || '/favicon.jpg'}
+                  alt={experiment.titleEn}
+                  width={80}
+                  height={80}
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <div>
                 <h1 className="text-4xl sm:text-5xl font-bold text-white mb-2">{title}</h1>
                 <p className="text-lg text-slate-400">{description}</p>
