@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { ServiceWorkerInitializer } from '@/components/ServiceWorkerInitializer'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -58,16 +59,10 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link rel="manifest" href="/manifest.json" />
-        <script>
-          {`
-            if ('serviceWorker' in navigator) {
-              navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed:', err));
-            }
-          `}
-        </script>
       </head>
       <body className="font-sans antialiased bg-slate-950 text-slate-100">
         {children}
+        <ServiceWorkerInitializer />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
