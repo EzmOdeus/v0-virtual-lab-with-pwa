@@ -1,0 +1,168 @@
+export interface Experiment {
+  id: string;
+  titleAr: string;
+  titleEn: string;
+  descriptionAr: string;
+  descriptionEn: string;
+  category: 'physics' | 'chemistry' | 'biology';
+  iframe: string;
+  width: string;
+  height: string;
+  icon: string;
+}
+
+export const experiments: Experiment[] = [
+  {
+    id: 'density',
+    titleAr: 'الكثافة',
+    titleEn: 'Density',
+    descriptionAr: 'استكشف مفهوم الكثافة من خلال تجارب تفاعلية باستخدام أجسام مختلفة',
+    descriptionEn: 'Explore the concept of density through interactive experiments with various objects',
+    category: 'physics',
+    iframe: 'https://phet.colorado.edu/sims/html/density/latest/density_ar_SA.html',
+    width: '100%',
+    height: '600px',
+    icon: '⚖️',
+  },
+  {
+    id: 'forces-motion',
+    titleAr: 'القوى والحركة',
+    titleEn: 'Forces and Motion',
+    descriptionAr: 'افهم تأثير القوى على حركة الأجسام والسرعة والتسارع',
+    descriptionEn: 'Understand how forces affect motion, velocity, and acceleration',
+    category: 'physics',
+    iframe: 'https://phet.colorado.edu/sims/html/forces-and-motion-basics/latest/forces-and-motion-basics_ar_SA.html',
+    width: '100%',
+    height: '600px',
+    icon: '➡️',
+  },
+  {
+    id: 'energy-forms',
+    titleAr: 'أشكال الطاقة',
+    titleEn: 'Forms of Energy',
+    descriptionAr: 'اكتشف الطاقة الحرارية والحركية والكهربائية والضوئية',
+    descriptionEn: 'Discover thermal, kinetic, electrical, and light energy',
+    category: 'physics',
+    iframe: 'https://phet.colorado.edu/sims/html/energy-forms-and-changes/latest/energy-forms-and-changes_ar_SA.html',
+    width: '100%',
+    height: '600px',
+    icon: '⚡',
+  },
+  {
+    id: 'gravity-orbits',
+    titleAr: 'الجاذبية والمدارات',
+    titleEn: 'Gravity and Orbits',
+    descriptionAr: 'استكشف تأثير الجاذبية على حركة الأجسام والمدارات الكوكبية',
+    descriptionEn: 'Explore gravity effects on motion and planetary orbits',
+    category: 'physics',
+    iframe: 'https://phet.colorado.edu/sims/html/gravity-and-orbits/latest/gravity-and-orbits_ar_SA.html',
+    width: '100%',
+    height: '600px',
+    icon: '🌍',
+  },
+  {
+    id: 'balancing-chemical',
+    titleAr: 'موازنة المعادلات الكيميائية',
+    titleEn: 'Balancing Chemical Equations',
+    descriptionAr: 'تعلم كيفية موازنة المعادلات الكيميائية بشكل صحيح',
+    descriptionEn: 'Learn how to balance chemical equations correctly',
+    category: 'chemistry',
+    iframe: 'https://phet.colorado.edu/sims/html/balancing-chemical-equations/latest/balancing-chemical-equations_ar_SA.html',
+    width: '100%',
+    height: '600px',
+    icon: '⚗️',
+  },
+  {
+    id: 'states-of-matter',
+    titleAr: 'حالات المادة',
+    titleEn: 'States of Matter',
+    descriptionAr: 'استكشف الخصائص المختلفة للمواد الصلبة والسائلة والغازية',
+    descriptionEn: 'Explore properties of solids, liquids, and gases',
+    category: 'chemistry',
+    iframe: 'https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_ar_SA.html',
+    width: '100%',
+    height: '600px',
+    icon: '❄️',
+  },
+  {
+    id: 'molarity',
+    titleAr: 'المولارية',
+    titleEn: 'Molarity',
+    descriptionAr: 'افهم تركيز المحاليل الكيميائية والمولارية',
+    descriptionEn: 'Understand concentration and molarity of chemical solutions',
+    category: 'chemistry',
+    iframe: 'https://phet.colorado.edu/sims/html/molarity/latest/molarity_ar_SA.html',
+    width: '100%',
+    height: '600px',
+    icon: '🧪',
+  },
+  {
+    id: 'acid-base',
+    titleAr: 'الأحماض والقواعد',
+    titleEn: 'Acids and Bases',
+    descriptionAr: 'تعرف على الأحماض والقواعد ومقياس pH',
+    descriptionEn: 'Learn about acids, bases, and pH scale',
+    category: 'chemistry',
+    iframe: 'https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_ar_SA.html',
+    width: '100%',
+    height: '600px',
+    icon: '🔬',
+  },
+  {
+    id: 'genetics',
+    titleAr: 'الوراثة',
+    titleEn: 'Genetics',
+    descriptionAr: 'استكشف الصفات الموروثة وقوانين الوراثة',
+    descriptionEn: 'Explore hereditary traits and inheritance laws',
+    category: 'biology',
+    iframe: 'https://phet.colorado.edu/sims/html/natural-selection/latest/natural-selection_ar_SA.html',
+    width: '100%',
+    height: '600px',
+    icon: '🧬',
+  },
+  {
+    id: 'photosynthesis',
+    titleAr: 'البناء الضوئي',
+    titleEn: 'Photosynthesis',
+    descriptionAr: 'افهم عملية البناء الضوئي وأهميتها للحياة',
+    descriptionEn: 'Understand photosynthesis and its importance for life',
+    category: 'biology',
+    iframe: 'https://phet.colorado.edu/sims/html/photosynthesis-lab/latest/photosynthesis-lab_ar_SA.html',
+    width: '100%',
+    height: '600px',
+    icon: '🌱',
+  },
+  {
+    id: 'respiration',
+    titleAr: 'التنفس الخلوي',
+    titleEn: 'Cellular Respiration',
+    descriptionAr: 'تعرف على عملية التنفس الخلوي وإنتاج الطاقة',
+    descriptionEn: 'Learn about cellular respiration and energy production',
+    category: 'biology',
+    iframe: 'https://phet.colorado.edu/sims/html/cellular-respiration/latest/cellular-respiration_ar_SA.html',
+    width: '100%',
+    height: '600px',
+    icon: '💨',
+  },
+];
+
+export const categories = [
+  {
+    id: 'physics',
+    labelAr: 'الفيزياء',
+    labelEn: 'Physics',
+    icon: '⚛️',
+  },
+  {
+    id: 'chemistry',
+    labelAr: 'الكيمياء',
+    labelEn: 'Chemistry',
+    icon: '⚗️',
+  },
+  {
+    id: 'biology',
+    labelAr: 'الأحياء',
+    labelEn: 'Biology',
+    icon: '🧬',
+  },
+];
