@@ -1,11 +1,14 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Header } from '@/components/Header';
 import { experiments } from '@/lib/experiments';
 import { useParams } from 'next/navigation';
+import { getQuestionsByExperiment, getRandomQuestions } from '@/lib/questions';
+import { QuizModal } from '@/components/QuizModal';
+import { getExperimentQuizStats } from '@/lib/storage';
 
 const categoryIcons: Record<string, string> = {
   physics: '/physics-icon.jpg',
@@ -15,10 +18,19 @@ const categoryIcons: Record<string, string> = {
 
 function ExperimentContent() {
   const [language, setLanguage] = useState<'ar' | 'en'>('ar');
+  const [preTestOpen, setPreTestOpen] = useState(false);
+  const [postTestOpen, setPostTestOpen] = useState(false);
+  const [quizStats, setQuizStats] = useState(null as any);
   const params = useParams();
   const experimentId = params.id as string;
 
   const experiment = experiments.find((exp) => exp.id === experimentId);
+  
+  // Load quiz stats on mount
+  useEffect(() => {
+    const stats = getExperimentQuizStats(experimentId);
+    setQuizStats(stats);
+  }, [experimentId]);
 
   if (!experiment) {
     return (
@@ -97,6 +109,85 @@ function ExperimentContent() {
             </div>
           </div>
 
+          {/* Quiz Section */}
+          <div className="mb-8 rounded-lg border border-blue-500/50 bg-blue-600/10 p-6">
+            <div className="mb-6">
+              <h3 className="text-2xl font-bold text-white mb-2">
+                {language === 'ar' ? 'اختبر معرفتك' : 'Test Your Knowledge'}
+              </h3>
+              <p className="text-slate-300">
+                {language === 'ar'
+                  ? 'قم بإجراء الاختبار القبلي والبعدي لقياس فهمك للموضوع'
+                  : 'Take the pre-test and post-test to measure your understanding of the topic'}
+              </p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              {/* Pre-Test Button */}
+              <button
+                onClick={() => setPreTestOpen(true)}
+                className="group relative overflow-hidden rounded-lg border border-slate-700 bg-slate-800/50 p-6 text-left hover:border-blue-500/50 hover:bg-slate-800 transition-all"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h4 className="text-lg font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                      {language === 'ar' ? 'اختبار قبلي' : 'Pre-Test'}
+                    </h4>
+                    <p className="text-sm text-slate-400 mb-4">
+                      {language === 'ar'
+                        ? 'اختبر معرفتك قبل التجربة'
+                        : 'Test your knowledge before the experiment'}
+                    </p>
+                    {quizStats?.preTestCompleted && (
+                      <div className="inline-block rounded-full bg-green-600/20 px-3 py-1 text-xs font-semibold text-green-400">
+                        {language === 'ar' ? 'مكتمل' : 'Completed'} - {quizStats?.preTestScore?.toFixed(1)}%
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-2xl">
+                    {quizStats?.preTestCompleted ? '✓' : '→'}
+                  </div>
+                </div>
+              </button>
+
+              {/* Post-Test Button */}
+              <button
+                onClick={() => setPostTestOpen(true)}
+                className="group relative overflow-hidden rounded-lg border border-slate-700 bg-slate-800/50 p-6 text-left hover:border-cyan-500/50 hover:bg-slate-800 transition-all"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h4 className="text-lg font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                      {language === 'ar' ? 'اختبار بعدي' : 'Post-Test'}
+                    </h4>
+                    <p className="text-sm text-slate-400 mb-4">
+                      {language === 'ar'
+                        ? 'اختبر ما تعلمته من التجربة'
+                        : 'Test what you learned from the experiment'}
+                    </p>
+                    {quizStats?.postTestCompleted && (
+                      <div className="inline-block rounded-full bg-cyan-600/20 px-3 py-1 text-xs font-semibold text-cyan-400">
+                        {language === 'ar' ? 'مكتمل' : 'Completed'} - {quizStats?.postTestScore?.toFixed(1)}%
+                      </div>
+                    )}
+                    {quizStats?.improvement !== undefined && (
+                      <div className={`inline-block ml-2 rounded-full px-3 py-1 text-xs font-semibold ${
+                        quizStats.improvement >= 0
+                          ? 'bg-green-600/20 text-green-400'
+                          : 'bg-red-600/20 text-red-400'
+                      }`}>
+                        {quizStats.improvement >= 0 ? '+' : ''}{quizStats.improvement?.toFixed(1)}%
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-2xl">
+                    {quizStats?.postTestCompleted ? '✓' : '→'}
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+
           {/* Info Section */}
           <div className="grid gap-6 md:grid-cols-2">
             <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-6">
@@ -158,6 +249,33 @@ function ExperimentContent() {
             </Link>
           </div>
         </div>
+
+        {/* Quiz Modals */}
+        <QuizModal
+          isOpen={preTestOpen}
+          onClose={() => {
+            setPreTestOpen(false);
+            const stats = getExperimentQuizStats(experimentId);
+            setQuizStats(stats);
+          }}
+          questions={getRandomQuestions(experimentId, 'pre', 3)}
+          experimentId={experimentId}
+          stage="pre"
+          language={language}
+        />
+
+        <QuizModal
+          isOpen={postTestOpen}
+          onClose={() => {
+            setPostTestOpen(false);
+            const stats = getExperimentQuizStats(experimentId);
+            setQuizStats(stats);
+          }}
+          questions={getRandomQuestions(experimentId, 'post', 3)}
+          experimentId={experimentId}
+          stage="post"
+          language={language}
+        />
       </main>
     </>
   );
