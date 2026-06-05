@@ -9,6 +9,10 @@ import { useParams } from 'next/navigation';
 import { getQuestionsByExperiment, getRandomQuestions } from '@/lib/questions';
 import { QuizModal } from '@/components/QuizModal';
 import { getExperimentQuizStats } from '@/lib/storage';
+import { getChallengesByExperiment, getChallengesByDifficulty, Difficulty } from '@/lib/levels';
+import { DifficultySelector } from '@/components/DifficultySelector';
+import { ChallengeCard } from '@/components/ChallengeCard';
+import { getChallengeProgress } from '@/lib/storage';
 
 const categoryIcons: Record<string, string> = {
   physics: '/physics-icon.jpg',
@@ -21,15 +25,20 @@ function ExperimentContent() {
   const [preTestOpen, setPreTestOpen] = useState(false);
   const [postTestOpen, setPostTestOpen] = useState(false);
   const [quizStats, setQuizStats] = useState(null as any);
+  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>('basic');
+  const [challenges, setChallenges] = useState<any[]>([]);
   const params = useParams();
   const experimentId = params.id as string;
 
   const experiment = experiments.find((exp) => exp.id === experimentId);
   
-  // Load quiz stats on mount
+  // Load quiz stats and challenges on mount
   useEffect(() => {
     const stats = getExperimentQuizStats(experimentId);
     setQuizStats(stats);
+    
+    const allChallenges = getChallengesByExperiment(experimentId);
+    setChallenges(allChallenges);
   }, [experimentId]);
 
   if (!experiment) {
@@ -187,6 +196,55 @@ function ExperimentContent() {
               </button>
             </div>
           </div>
+
+          {/* Challenges Section */}
+          {challenges.length > 0 && (
+            <div className="mb-8 rounded-lg border border-purple-500/50 bg-purple-600/10 p-6">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  {language === 'ar' ? 'التحديات' : 'Challenges'}
+                </h3>
+                <p className="text-slate-300">
+                  {language === 'ar'
+                    ? 'اقبل التحديات واختبر مهاراتك في مستويات مختلفة من الصعوبة'
+                    : 'Accept challenges and test your skills at different difficulty levels'}
+                </p>
+              </div>
+
+              {/* Difficulty Selector */}
+              <DifficultySelector
+                selected={selectedDifficulty}
+                onSelect={setSelectedDifficulty}
+                language={language}
+              />
+
+              {/* Challenge Cards */}
+              <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                {challenges
+                  .filter((c) => c.difficulty === selectedDifficulty)
+                  .map((challenge) => {
+                    const progress = getChallengeProgress(challenge.id);
+                    const previousLevelComplete = challenge.minScoreRequired
+                      ? challenges.find(
+                          (c) =>
+                            c.difficulty === 'basic' &&
+                            getChallengeProgress(c.id)?.bestScore &&
+                            getChallengeProgress(c.id).bestScore >= challenge.minScoreRequired
+                        )
+                      : true;
+
+                    return (
+                      <ChallengeCard
+                        key={challenge.id}
+                        challenge={challenge}
+                        language={language}
+                        isLocked={!previousLevelComplete && challenge.minScoreRequired}
+                      />
+                    );
+                  })}
+              </div>
+            </div>
+          )}
 
           {/* Info Section */}
           <div className="grid gap-6 md:grid-cols-2">

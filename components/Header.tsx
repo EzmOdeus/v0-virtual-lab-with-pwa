@@ -45,6 +45,10 @@ export function Header({ language, onLanguageChange }: HeaderProps) {
             <Link href="/experiments" className="text-slate-300 hover:text-blue-400 transition-colors font-medium">
               {language === 'ar' ? 'التجارب' : 'Experiments'}
             </Link>
+            <Link href="/analytics" className="text-slate-300 hover:text-cyan-400 transition-colors font-medium flex items-center gap-1">
+              <span>📊</span>
+              {language === 'ar' ? 'التحليلات' : 'Analytics'}
+            </Link>
           </nav>
 
           {/* Language Toggle & Menu */}
